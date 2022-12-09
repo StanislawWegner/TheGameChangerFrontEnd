@@ -1,0 +1,298 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #333;
+	font-family: "Montserrat", sans-serif;
+	height: 100vh;
+}
+
+.wrapper {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 1200px;
+}
+
+.hero-img {
+	position: relative;
+	background-image: url(./img/video-games-gfc356addd_640.jpg);
+	height: 300px;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+}
+
+.hero-bg {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+.hero-text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	text-align: center;
+}
+
+.hero-text h1 {
+	text-shadow: 0px 0px 15px white;
+}
+
+.base {
+	margin-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.games,
+.types {
+	display: flex;
+	position: relative;
+	width: 400px;
+	height: 400px;
+	flex-direction: column;
+	border-radius: 15px;
+	border: 3px solid whitesmoke;
+}
+
+.games {
+	background-color: #81ba95;
+	background-image: linear-gradient(349deg, #1d7e3f 0%, #81ba95 100%);
+}
+
+.types {
+	margin-top: 10px;
+	background-color: rgb(112, 139, 221);
+	background-image: linear-gradient(349deg, rgb(31, 70, 187) 0%, rgb(128, 147, 205) 100%);
+
+}
+
+.all {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	top: 15px;
+	right: 15px;
+	font-size: 15px;
+	font-weight: bold;
+	font-family: "Roboto", sans-serif;
+	border-radius: 50%;
+	background-color: rgba(80, 70, 70, 0.541);
+	text-transform: uppercase;
+	cursor: pointer;
+	border: 5px solid rgb(230, 233, 220);
+	box-shadow: 0px 0px 10px;
+}
+
+.base h2 {
+	margin-top: 20px;
+	margin-left: 20px;
+	font-size: 40px;
+	text-transform: uppercase;
+}
+
+.input-style {
+	position: absolute;
+	width: 300px;
+	height: 40px;
+	border-radius: 10px;
+	border: 2px solid rgb(8, 8, 8);
+	box-shadow: 0px 0px 10px;
+}
+
+#gameName {
+	top: 120px;
+	left: 20px;
+}
+
+#typeId {
+	top: 180px;
+	left: 20px;
+}
+
+#gameType {
+	top: 180px;
+	left: 20px;
+}
+
+.buttons {
+	position: absolute;
+	top: 250px;
+	left: 45px;
+	
+}
+
+.btn {
+	padding: 10px 15px;
+	margin-right: 10px;
+	border-radius: 10px;
+	text-transform: uppercase;
+	font-weight: bold;
+	border: 2px solid rgb(8, 8, 8);
+	box-shadow: 0px 0px 10px;
+
+
+	cursor: pointer;
+}
+
+.headerH2 {
+	margin-top: 10px;
+	border-bottom: 2px solid black;
+}
+
+.deleteAll {
+	position: absolute;
+	bottom: 10px;
+	left: 30px;
+	width: 120px;
+	padding: 5px 10px;
+	border-radius: 10px;
+	text-transform: uppercase;
+	font-weight: bold;
+	background-color: rgb(208, 68, 68);
+	border: 2px solid rgb(8, 8, 8);
+	box-shadow: 0px 0px 10px;
+	cursor: pointer;
+}
+
+.find {
+	background-color: green;
+}
+
+.add {
+	background-color: royalblue;
+}
+
+.delete {
+	background-color: rgb(226, 226, 23);
+}
+
+.listOfGames,
+.listOfTypes {
+	display: none;
+	padding: 20px 10px;
+	color: aliceblue;
+}
+
+h3 {
+	padding: 20px 0px;
+	font-size: 24px;
+}
+
+ul {
+	padding-bottom: 20px;
+	font-size: 15px;
+	list-style: none;
+}
+
+li {
+	padding: 10px 15px;
+	border-bottom: 1px solid;
+}
+
+@media (min-width: 576px) {
+	.games,
+	.types {
+		display: flex;
+		position: relative;
+		width: 470px;
+		height: 350px;
+		justify-content: space-between;
+		border-left: 3px solid whitesmoke;
+		border-top: 3px solid whitesmoke;
+		border-right: 3px solid whitesmoke;
+		border-bottom: 3px solid whitesmoke;
+	}
+
+	.input-style {
+		position: absolute;
+		width: 300px;
+		height: 30px;
+	}
+
+	#gameName {
+		top: 120px;
+		left: 10px;
+	}
+
+	#typeId {
+		top: 160px;
+		left: 10px;
+	}
+
+	#gameType {
+		top: 120px;
+		left: 10px;
+	}
+
+	.buttons {
+		top: 220px;
+		left: 30px;
+	}
+
+	.deleteAll {
+		bottom: 10px;
+		left: 320px;
+		width: 120px;
+	}
+
+	.btn {
+		padding: 5px 10px;
+	}
+
+	.base {
+		margin-top: 50px;
+	}
+
+	.types {
+		margin-top: 0px;
+	}
+
+	.all {
+		font-size: 15px;
+	}
+
+	.listOfGames,
+	.listOfTypes {
+		display: none;
+		padding: 20px 5px;
+		color: aliceblue;
+	}
+
+	h3 {
+		padding: 20px 0px;
+		font-size: 36px;
+	}
+
+	ul {
+		padding-bottom: 30px;
+		font-size: 30px;
+		list-style: none;
+	}
+
+	li {
+		padding: 15px 30px;
+		border-bottom: 1px solid;
+	}
+}
+
+@media (min-width: 1400px) {
+	.hero-img {
+		background-image: url(./img/video-games-g0db9839ec_1920.jpg);
+		height: 400px;
+	}
+
+	.hero-text h1 {
+		font-size: 90px;
+	}
+}

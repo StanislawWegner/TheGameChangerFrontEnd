@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheGameChanger</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Nerko+One&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/ed001c5608.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+
+    <div class="hero-img">
+        <div class="hero-bg"></div>
+        <div class="hero-text">
+            <h1>The Game Changer</h1>
+        </div>
+    </div>
+
+    <div class="wrapper">
+
+        <section class="base">
+
+            <div class="games">
+                <div class="headerH2">
+                    <h2>tytuł gry</h2>
+                </div>
+                <button class="getAllGames all">Wszystko</button>
+                <!-- <label for="gameName">Tytuł gry</label> -->
+                <input type="text" id="gameName" placeholder="   Wpisz tytuł gry..." class="input-style">
+                <!-- <label for="genreId">Id gatunku gry</label> -->
+                <input type="text" id="typeId" placeholder="   Wpisz Id gatunku gry..." class="input-style">
+                <div class="buttons">
+                    <button class="find btn">szukaj</button>
+                    <button class="add btn">dodaj</button>
+                    <button class="delete btn">usuń</button>
+                </div>
+                <button class="deleteAllGames deleteAll">usuń wszystko</button>
+            </div>
+
+
+            <div class="types">
+                <div class="headerH2">
+                    <h2>typ gry</h2>
+                </div>
+
+                <button class="getAllTypes all">Wszystko</button>
+                <!-- <label for="gameType">Typ gry</label> -->
+                <input type="text" id="gameType" placeholder="   Wpisz gatunek gry..." class="input-style">
+                <div class="buttons">
+                    <button class="find btn">szukaj</button>
+                    <button class="add btn">dodaj</button>
+                    <button class="delete btn">usuń</button>
+                </div>
+                <button class="deleteAllTypes deleteAll">usuń wszystko</button>
+            </div>
+        </section>
+
+
+        <div class="listOfGames">
+            <h3>Lista gier</h3>
+            <ul class="ulList">
+            </ul>
+        </div>
+
+        <div class="listOfTypes">
+            <h3>Lista Typów</h3>
+            <ul>
+                <li>
+                    <p>Nr: 1<span> --- Typ:</span> Open World <span> --- Id:</span> 20 </p>
+                </li>
+                <li>
+                    <p>Nr: 1<span> --- Typ:</span> Open World <span> --- Id:</span> 20 </p>
+                </li>
+                <li>
+                    <p>Nr: 1<span> --- Typ:</span> Open World <span> --- Id:</span> 20 </p>
+                </li>
+                
+                
+            </ul>
+        </div>
+
+
+    </div>
+    </div>
+
+
+</body>
+
+
+<script src="./main.js"></script>
+</html>
