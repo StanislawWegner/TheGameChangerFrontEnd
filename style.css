@@ -59,7 +59,7 @@ body {
 	display: flex;
 	position: relative;
 	width: 400px;
-	height: 400px;
+	height: 420px;
 	flex-direction: column;
 	border-radius: 15px;
 	border: 3px solid whitesmoke;
@@ -80,12 +80,12 @@ body {
 	);
 }
 
-button{
-	transition: transform 0.3s;
+button {
+	transition: transform .1s;
 }
 
-button:active{
-transform: scale(.9);
+button:active {
+	transform: scale(0.95);
 }
 .all {
 	position: absolute;
@@ -146,6 +146,37 @@ span {
 	left: 45px;
 }
 
+.gameAlert {
+	display: none;
+	position: absolute;
+	bottom: 70px;
+	left: 20px;
+	width: 350px;
+	padding: 5px;
+	text-align: center;
+	border-radius: 10px;
+	font-weight: bold;
+	color: red;
+	border: 2px solid rgb(8, 8, 8);
+	box-shadow: 0px 0px 10px;
+	background-color: whitesmoke;
+}
+
+.typeAlert {
+	display: block;
+	position: absolute;
+	bottom: 70px;
+	left: 20px;
+	width: 350px;
+	padding: 10px;
+	border-radius: 10px;
+	font-weight: bold;
+	color: red;
+	border: 2px solid rgb(8, 8, 8);
+	box-shadow: 0px 0px 10px;
+	background-color: whitesmoke;
+}
+
 .btn {
 	padding: 10px 15px;
 	margin-right: 10px;
@@ -169,8 +200,9 @@ span {
 .deleteAll {
 	position: absolute;
 	bottom: 10px;
-	left: 30px;
+	right: 30px;
 	width: 120px;
+	height: 50px;
 	padding: 5px 10px;
 	border-radius: 10px;
 	text-transform: uppercase;
