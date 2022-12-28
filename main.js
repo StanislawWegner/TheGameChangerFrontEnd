@@ -3,6 +3,7 @@ const getAllTypesBtn = document.querySelector(".getAllTypes");
 const listOfGames = document.querySelector(".listOfGames");
 const listOfTypes = document.querySelector(".listOfTypes");
 
+const allButtons = document.querySelectorAll("button"); 
 const addGameBtn = document.querySelector(".add-game");
 const deleteGameBtn = document.querySelector(".delete-game");
 
@@ -12,6 +13,8 @@ const inputGameType = document.querySelector("#gameType");
 
 const ulListGames = document.querySelector(".ulListGames");
 const ulListTypes = document.querySelector(".ulListTypes");
+
+
 
 const getAllGames = () => {
 	ulListGames.innerHTML = "";
