@@ -35,7 +35,8 @@
                 </div>
                 <button class="getAllGames all">Wszystko</button>
                 <!-- <label for="gameName">Tytuł gry</label> -->
-                <input type="text" id="gameName" placeholder="   Wpisz tytuł gry..." class="input-style">
+                <input type="text" id="gameName" placeholder="   Wpisz tytuł gry, max 25 znaków..." maxlength="25"
+                    class="input-style">
                 <!-- <label for="genreId">Id gatunku gry</label> -->
                 <input type="text" id="typeId" placeholder="   Wpisz Id gatunku gry..." class="input-style">
                 <div class="buttons">
@@ -55,7 +56,8 @@
 
                 <button class="getAllTypes all">Wszystko</button>
                 <!-- <label for="gameType">Typ gry</label> -->
-                <input type="text" id="gameType" placeholder="   Wpisz gatunek gry..." class="input-style">
+                <input type="text" id="gameType" placeholder="   Wpisz gatunek gry, max 25 znaków..." maxlength="25"
+                    class="input-style">
                 <div class="buttons">
                     <button class="find-type btn find">szukaj</button>
                     <button class="add-type btn add">dodaj</button>
@@ -66,26 +68,34 @@
             </div>
         </section>
 
+        <section>
+            <div class="listOfGames">
+                <h3>Lista gier</h3>
+                <ul class="ulListGames">
+                </ul>
+            </div>
 
-        <div class="listOfGames">
-            <h3>Lista gier</h3>
-            <ul class="ulListGames">
-            </ul>
-        </div>
-
-        <div class="listOfTypes">
-            <h3>Lista Typów</h3>
-            <ul class="ulListTypes">
-            </ul>
-        </div>
-
-
-    </div>
+            <div class="listOfTypes">
+                <h3>Lista Typów</h3>
+                <ul class="ulListTypes">
+                </ul>
+            </div>
+        </section>
     </div>
 
+    <section>
+        <div class="deleteAllAlert"><p>Czy na pewno chcesz usunąć wszystkie gry?</p>
+        
+        <button class="confirmAlertDeleteAll btn ">Usuń</button>
+        <button class="cancelAlertDeleteAll btn">Anuluj</button>
+        
+        
+        </div>
+    </section>
 
 </body>
 
 
 <script src="./main.js"></script>
+
 </html>

@@ -9,7 +9,8 @@ const deleteGameBtn = document.querySelector(".delete-game");
 const findGameBtn = document.querySelector(".find-game");
 
 const addTypeBtn = document.querySelector(".add-type");
-const findType = document.querySelector(".find-type");
+const findTypeBtn = document.querySelector(".find-type");
+const deleteTypeBtn = document.querySelector(".delete-type");
 
 const inputGameName = document.querySelector("#gameName");
 const inputTypeId = document.querySelector("#typeId");
@@ -22,8 +23,7 @@ const gameAlert = document.querySelector(".gameAlert");
 const typeAlert = document.querySelector(".typeAlert");
 
 const getAllGames = () => {
-	ulListGames.innerHTML = "";
-	gameAlert.style.display = "none";
+	clearListsAndAlerts();
 
 	fetch("https://thegamechanger.azurewebsites.net/game")
 		.then((response) => response.json())
@@ -32,6 +32,8 @@ const getAllGames = () => {
 				returnAllGames(i + 1, data[i].name, data[i].genre, data[i].id);
 			}
 		});
+
+	clearInputs();
 };
 
 const returnAllGames = (number, name, type, id) => {
@@ -43,30 +45,48 @@ const returnAllGames = (number, name, type, id) => {
 };
 
 const addNewGame = () => {
-	gameAlert.style.display = "none";
+	clearListsAndAlerts();
 
-	fetch(`https://thegamechanger.azurewebsites.net/game/${inputTypeId.value}`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			name: `${inputGameName.value}`,
-		}),
-	});
+	if (inputGameName.value === "" || inputTypeId.value === "") {
+		gameAlert.textContent = "Wpisz nazwę nowej gry i Id gatunku";
+		gameAlert.style.display = "block";
+	} else {
+		fetch(
+			`https://thegamechanger.azurewebsites.net/game/${inputTypeId.value}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					name: `${inputGameName.value}`,
+				}),
+			}
+		);
+	}
+
+	clearInputs();
 };
 
 const deleteGame = () => {
-	gameAlert.style.display = "none";
+	clearListsAndAlerts();
 
-	fetch(`https://thegamechanger.azurewebsites.net/game/${inputTypeId.value}`, {
-		method: "DELETE",
-	});
+	if (inputTypeId.value === "") {
+		gameAlert.textContent = "Wpisz Id gry którą chcesz usunąć";
+		gameAlert.style.display = "block";
+	} else {
+		fetch(
+			`https://thegamechanger.azurewebsites.net/game/${inputTypeId.value}`,
+			{
+				method: "DELETE",
+			}
+		);
+	}
+	clearInputs();
 };
 
 const findGameByName = () => {
-	ulListGames.innerHTML = "";
-	gameAlert.style.display = "none";
+	clearListsAndAlerts();
 
 	if (inputGameName.value === "") {
 		gameAlert.textContent = "Wpisz tytuł szukanej gry";
@@ -80,6 +100,8 @@ const findGameByName = () => {
 				returnGameByName(data.name, data.genre, data.id);
 			});
 	}
+
+	clearInputs();
 };
 
 const returnGameByName = (name, type, id) => {
@@ -90,20 +112,41 @@ const returnGameByName = (name, type, id) => {
 	listOfGames.style.display = "block";
 };
 
+const clearListsAndAlerts = () => {
+	ulListGames.innerHTML = "";
+	listOfGames.style.display = "none";
+	gameAlert.style.display = "none";
+	typeAlert.style.display = "none";
+	ulListTypes.innerHTML = "";
+	listOfTypes.style.display = "none";
+};
+
+const clearInputs = () => {
+	inputGameName.value = "";
+	inputTypeId.value = "";
+	inputGameType.value = "";
+};
+
 getAllGamesBtn.addEventListener("click", getAllGames);
 addGameBtn.addEventListener("click", addNewGame);
 deleteGameBtn.addEventListener("click", deleteGame);
 findGameBtn.addEventListener("click", findGameByName);
 
-
-
-
-
 // Type Of Game Functions
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 const getAllTypes = () => {
-	ulListTypes.innerHTML = "";
-	typeAlert.style.display = "none";
+	clearListsAndAlerts();
 
 	fetch("https://thegamechanger.azurewebsites.net/genre")
 		.then((response) => response.json())
@@ -112,6 +155,8 @@ const getAllTypes = () => {
 				retrunAllTypes(i + 1, data[i].name, data[i].id);
 			}
 		});
+
+	clearInputs();
 };
 
 const retrunAllTypes = (number, type, id) => {
@@ -122,11 +167,11 @@ const retrunAllTypes = (number, type, id) => {
 };
 
 const addNewType = () => {
-	typeAlert.style.display = "none";
+	clearListsAndAlerts();
 
-	if(inputGameType.value === ''){
-		typeAlert.textContent = 'Wpisz nazwę nowego gatunku gry';
-		typeAlert.style.display = 'block';
+	if (inputGameType.value === "") {
+		typeAlert.textContent = "Wpisz nazwę nowego gatunku gry";
+		typeAlert.style.display = "block";
 	}
 
 	fetch(`https://thegamechanger.azurewebsites.net/genre`, {
@@ -138,15 +183,15 @@ const addNewType = () => {
 			name: `${inputGameType.value}`,
 		}),
 	});
+
+	clearInputs();
 };
 
-
 const findTypeByName = () => {
-	ulListTypes.innerHTML = "";
-	typeAlert.style.display = "none";
+	clearListsAndAlerts();
 
 	if (inputGameType.value === "") {
-		typeAlert.textContent = "Wpisz tytuł szukanego typu gry";
+		typeAlert.textContent = "Wpisz typ szukanej gry";
 		typeAlert.style.display = "block";
 	} else {
 		fetch(
@@ -157,6 +202,8 @@ const findTypeByName = () => {
 				returnTypeByName(data.name, data.id);
 			});
 	}
+
+	clearInputs();
 };
 
 const returnTypeByName = (name, id) => {
@@ -167,6 +214,24 @@ const returnTypeByName = (name, id) => {
 	listOfTypes.style.display = "block";
 };
 
+const deleteType = () => {
+	clearListsAndAlerts();
+
+	if (inputGameType.value === "") {
+		typeAlert.textContent = "Wpisz Id gatunku gry do usunięcia";
+		typeAlert.style.display = "block";
+	} else {
+		fetch(
+			`https://thegamechanger.azurewebsites.net/genre/delete/${inputGameType.value}`,
+			{
+				method: "DELETE",
+			}
+		);
+	}
+	clearInputs();
+};
+
 getAllTypesBtn.addEventListener("click", getAllTypes);
 addTypeBtn.addEventListener("click", addNewType);
-findType.addEventListener("click", findTypeByName);
+findTypeBtn.addEventListener("click", findTypeByName);
+deleteTypeBtn.addEventListener("click", deleteType);
