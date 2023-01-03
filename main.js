@@ -7,10 +7,12 @@ const allButtons = document.querySelectorAll("button");
 const addGameBtn = document.querySelector(".add-game");
 const deleteGameBtn = document.querySelector(".delete-game");
 const findGameBtn = document.querySelector(".find-game");
+const deleteAllGamesBtn = document.querySelector(".deleteAllGames");
 
 const addTypeBtn = document.querySelector(".add-type");
 const findTypeBtn = document.querySelector(".find-type");
 const deleteTypeBtn = document.querySelector(".delete-type");
+const deleteAllTypesBtn = document.querySelector(".deleteAllTypes");
 
 const inputGameName = document.querySelector("#gameName");
 const inputTypeId = document.querySelector("#typeId");
@@ -21,6 +23,13 @@ const ulListTypes = document.querySelector(".ulListTypes");
 
 const gameAlert = document.querySelector(".gameAlert");
 const typeAlert = document.querySelector(".typeAlert");
+
+const deleteAllAlert = document.querySelector(".deleteAllAlert");
+const confirmAlertDeleteAllBtn = document.querySelector(
+	".confirmAlertDeleteAll"
+);
+const cancelAlertDeleteAllBtn = document.querySelector(".cancelAlertDeleteAll");
+const deleteAllWindowText = document.querySelector(".deleteAllWindowText");
 
 const getAllGames = () => {
 	clearListsAndAlerts();
@@ -127,10 +136,40 @@ const clearInputs = () => {
 	inputGameType.value = "";
 };
 
+const deleteAllGamesWindow = () => {
+	deleteAllAlert.classList.remove("showDeleteAllTypesAlert");
+	deleteAllWindowText.textContent = "Na pewno chcesz usunąć wszystkie gry?"
+	deleteAllAlert.classList.add("showDeleteAllGamesAlert");
+};
+
+const cancelDeleteAllWindow = () => {
+	deleteAllAlert.classList.remove("showDeleteAllGamesAlert");
+	deleteAllAlert.classList.remove("showDeleteAllTypesAlert");
+};
+
+const deleteAllGamesOrTypes = () => {
+	if (deleteAllAlert.classList.contains("showDeleteAllGamesAlert")) {
+		fetch("https://thegamechanger.azurewebsites.net/game/deleteAll", {
+			method: "DELETE",
+		});
+	} else if (deleteAllAlert.classList.contains("showDeleteAllTypesAlert")) {
+		fetch("https://thegamechanger.azurewebsites.net/genre/deleteAll", {
+			method: "DELETE",
+		});
+	}
+
+	cancelDeleteAllWindow();
+	clearListsAndAlerts();
+	clearInputs();
+};
+
 getAllGamesBtn.addEventListener("click", getAllGames);
 addGameBtn.addEventListener("click", addNewGame);
 deleteGameBtn.addEventListener("click", deleteGame);
 findGameBtn.addEventListener("click", findGameByName);
+deleteAllGamesBtn.addEventListener("click", deleteAllGamesWindow);
+cancelAlertDeleteAllBtn.addEventListener("click", cancelDeleteAllWindow);
+confirmAlertDeleteAllBtn.addEventListener("click", deleteAllGamesOrTypes);
 
 // Type Of Game Functions
 //
@@ -231,7 +270,14 @@ const deleteType = () => {
 	clearInputs();
 };
 
+const deleteAllTypesWindow = () => {
+	deleteAllAlert.classList.remove("showDeleteAllGamesAlert");
+	deleteAllWindowText.textContent = "Na pewno chcesz usunąć wszystkie gatunki gier?";
+	deleteAllAlert.classList.add("showDeleteAllTypesAlert");
+};
+
 getAllTypesBtn.addEventListener("click", getAllTypes);
 addTypeBtn.addEventListener("click", addNewType);
 findTypeBtn.addEventListener("click", findTypeByName);
 deleteTypeBtn.addEventListener("click", deleteType);
+deleteAllTypesBtn.addEventListener("click", deleteAllTypesWindow);

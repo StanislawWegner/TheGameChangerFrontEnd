@@ -252,7 +252,7 @@ li {
 
 .deleteAllAlert {
 	position: relative;
-	top: 400px;
+	top: -300px;
 	position: absolute;
 	left: 10%;
 	width: 80%;
@@ -261,6 +261,15 @@ li {
 	border-radius: 15px;
 	border: 3px solid red;
 	z-index: 10;
+	transition: .8s;
+}
+
+.showDeleteAllGamesAlert{
+	top: 400px;
+}
+
+.showDeleteAllTypesAlert{
+	top: 850px;
 }
 
 .deleteAllAlert p {
@@ -285,6 +294,23 @@ li {
 	background-color: rgb(121, 220, 106);
 	cursor: pointer;
 }
+
+
+/*
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+*/
 
 @media (min-width: 576px) {
 	.games,
