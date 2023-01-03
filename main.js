@@ -25,6 +25,7 @@ const gameAlert = document.querySelector(".gameAlert");
 const typeAlert = document.querySelector(".typeAlert");
 
 const deleteAllAlert = document.querySelector(".deleteAllAlert");
+const shadowImageForAlert = document.querySelector(".shadowImageForAlert")
 const confirmAlertDeleteAllBtn = document.querySelector(
 	".confirmAlertDeleteAll"
 );
@@ -136,15 +137,23 @@ const clearInputs = () => {
 	inputGameType.value = "";
 };
 
+const deleteAllWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+}
+
 const deleteAllGamesWindow = () => {
+	deleteAllWindow();
 	deleteAllAlert.classList.remove("showDeleteAllTypesAlert");
-	deleteAllWindowText.textContent = "Na pewno chcesz usunąć wszystkie gry?"
+	deleteAllWindowText.textContent = "Na pewno chcesz usunąć wszystkie gry?";
 	deleteAllAlert.classList.add("showDeleteAllGamesAlert");
 };
 
 const cancelDeleteAllWindow = () => {
 	deleteAllAlert.classList.remove("showDeleteAllGamesAlert");
 	deleteAllAlert.classList.remove("showDeleteAllTypesAlert");
+	shadowImageForAlert.style.display = "none";
 };
 
 const deleteAllGamesOrTypes = () => {
@@ -159,8 +168,6 @@ const deleteAllGamesOrTypes = () => {
 	}
 
 	cancelDeleteAllWindow();
-	clearListsAndAlerts();
-	clearInputs();
 };
 
 getAllGamesBtn.addEventListener("click", getAllGames);
@@ -271,8 +278,10 @@ const deleteType = () => {
 };
 
 const deleteAllTypesWindow = () => {
+	deleteAllWindow();
 	deleteAllAlert.classList.remove("showDeleteAllGamesAlert");
-	deleteAllWindowText.textContent = "Na pewno chcesz usunąć wszystkie gatunki gier?";
+	deleteAllWindowText.textContent =
+		"Na pewno chcesz usunąć wszystkie gatunki gier?";
 	deleteAllAlert.classList.add("showDeleteAllTypesAlert");
 };
 
