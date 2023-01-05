@@ -25,12 +25,20 @@ const gameAlert = document.querySelector(".gameAlert");
 const typeAlert = document.querySelector(".typeAlert");
 
 const deleteAllAlert = document.querySelector(".deleteAllAlert");
-const shadowImageForAlert = document.querySelector(".shadowImageForAlert")
+const shadowImageForAlert = document.querySelector(".shadowImageForAlert");
 const confirmAlertDeleteAllBtn = document.querySelector(
 	".confirmAlertDeleteAll"
 );
 const cancelAlertDeleteAllBtn = document.querySelector(".cancelAlertDeleteAll");
-const deleteAllWindowText = document.querySelector(".deleteAllWindowText");
+const deleteAllAlertText = document.querySelector(".deleteAllAlertText");
+
+const deleteOneTypeAlert = document.querySelector(".deleteOneTypeAlert");
+const confirmAlertDeleteOneTypeBtn = document.querySelector(
+	".confirmAlertDeleteOneType"
+);
+const cancelAlertDeleteOneTypeBtn = document.querySelector(
+	".cancelAlertDeleteOneType"
+);
 
 const getAllGames = () => {
 	clearListsAndAlerts();
@@ -39,16 +47,16 @@ const getAllGames = () => {
 		.then((response) => response.json())
 		.then((data) => {
 			for (let i = 0; i < data.length; i++) {
-				returnAllGames(i + 1, data[i].name, data[i].genre, data[i].id);
+				returnAllGames(i + 1, data[i].name, data[i].type);
 			}
 		});
 
 	clearInputs();
 };
 
-const returnAllGames = (number, name, type, id) => {
+const returnAllGames = (number, name, type) => {
 	const newResult = document.createElement("li");
-	newResult.innerHTML = `<p><span>Nr</span>: ${number} --- <span>Tytuł:</span> ${name}  --- <span>Typ:</span> ${type} - <span>Id:</span> ${id}</p>`;
+	newResult.innerHTML = `<p><span>Nr</span>: ${number} --- <span>Tytuł:</span> ${name}  --- <span>Gatunek:</span> ${type}`;
 
 	ulListGames.appendChild(newResult);
 	listOfGames.style.display = "block";
@@ -58,21 +66,19 @@ const addNewGame = () => {
 	clearListsAndAlerts();
 
 	if (inputGameName.value === "" || inputTypeId.value === "") {
-		gameAlert.textContent = "Wpisz nazwę nowej gry i Id gatunku";
+		gameAlert.textContent = "Wpisz nazwę i gatunek dla nowej gry";
 		gameAlert.style.display = "block";
 	} else {
-		fetch(
-			`https://thegamechanger.azurewebsites.net/game/${inputTypeId.value}`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					name: `${inputGameName.value}`,
-				}),
-			}
-		);
+		fetch(`https://thegamechanger.azurewebsites.net/game/newGame`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: `${inputGameName.value}`,
+				type: `${inputTypeId.value}`,
+			}),
+		});
 	}
 
 	clearInputs();
@@ -81,16 +87,20 @@ const addNewGame = () => {
 const deleteGame = () => {
 	clearListsAndAlerts();
 
-	if (inputTypeId.value === "") {
-		gameAlert.textContent = "Wpisz Id gry którą chcesz usunąć";
+	if (inputGameName.value === "" || inputTypeId.value === "") {
+		gameAlert.textContent = "Wpisz nazwę i gatunek gry, którą chcesz usunąć";
 		gameAlert.style.display = "block";
 	} else {
-		fetch(
-			`https://thegamechanger.azurewebsites.net/game/${inputTypeId.value}`,
-			{
-				method: "DELETE",
-			}
-		);
+		fetch(`https://thegamechanger.azurewebsites.net/game/deleteOneGame`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: `${inputGameName.value}`,
+				type: `${inputTypeId.value}`,
+			}),
+		});
 	}
 	clearInputs();
 };
@@ -107,16 +117,16 @@ const findGameByName = () => {
 		)
 			.then((res) => res.json())
 			.then((data) => {
-				returnGameByName(data.name, data.genre, data.id);
+				returnGameByName(data.name, data.type);
 			});
 	}
 
 	clearInputs();
 };
 
-const returnGameByName = (name, type, id) => {
+const returnGameByName = (name, type) => {
 	const newResult = document.createElement("li");
-	newResult.innerHTML = `<p>--- <span>Tytuł:</span> ${name}  --- <span>Typ:</span> ${type} - <span>Id:</span> ${id}</p>`;
+	newResult.innerHTML = `<p>--- <span>Tytuł:</span> ${name}  --- <span>Gatunek:</span> ${type} -`;
 
 	ulListGames.appendChild(newResult);
 	listOfGames.style.display = "block";
@@ -134,19 +144,21 @@ const clearListsAndAlerts = () => {
 const clearInputs = () => {
 	inputGameName.value = "";
 	inputTypeId.value = "";
-	inputGameType.value = "";
+	if(!deleteOneTypeAlert.classList.contains("showDeleteOneTypeWindow")){
+		inputGameType.value = "";
+	}
 };
 
-const deleteAllWindow = () => {
+const showDeleteAllWindow = () => {
 	clearListsAndAlerts();
 	clearInputs();
 	shadowImageForAlert.style.display = "block";
-}
+};
 
 const deleteAllGamesWindow = () => {
-	deleteAllWindow();
+	showDeleteAllWindow();
 	deleteAllAlert.classList.remove("showDeleteAllTypesAlert");
-	deleteAllWindowText.textContent = "Na pewno chcesz usunąć wszystkie gry?";
+	deleteAllAlertText.textContent = "Na pewno chcesz usunąć wszystkie gry?";
 	deleteAllAlert.classList.add("showDeleteAllGamesAlert");
 };
 
@@ -194,7 +206,7 @@ confirmAlertDeleteAllBtn.addEventListener("click", deleteAllGamesOrTypes);
 const getAllTypes = () => {
 	clearListsAndAlerts();
 
-	fetch("https://thegamechanger.azurewebsites.net/genre")
+	fetch("https://thegamechanger.azurewebsites.net/type")
 		.then((response) => response.json())
 		.then((data) => {
 			for (let i = 0; i < data.length; i++) {
@@ -205,9 +217,9 @@ const getAllTypes = () => {
 	clearInputs();
 };
 
-const retrunAllTypes = (number, type, id) => {
+const retrunAllTypes = (number, type) => {
 	const newResult = document.createElement("li");
-	newResult.innerHTML = `<p><span>Nr:</span> ${number}--- <span>Typ:</span> ${type} --- <span>Id:</span> ${id} </p>`;
+	newResult.innerHTML = `<p><span>Nr:</span> ${number} --- <span>Gatunek:</span> ${type} --- <span>`;
 	ulListTypes.appendChild(newResult);
 	listOfTypes.style.display = "block";
 };
@@ -220,7 +232,7 @@ const addNewType = () => {
 		typeAlert.style.display = "block";
 	}
 
-	fetch(`https://thegamechanger.azurewebsites.net/genre`, {
+	fetch(`https://thegamechanger.azurewebsites.net/type`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -237,11 +249,11 @@ const findTypeByName = () => {
 	clearListsAndAlerts();
 
 	if (inputGameType.value === "") {
-		typeAlert.textContent = "Wpisz typ szukanej gry";
+		typeAlert.textContent = "Wpisz gatunek szukanej gry";
 		typeAlert.style.display = "block";
 	} else {
 		fetch(
-			`https://thegamechanger.azurewebsites.net/genre/typeName/${inputGameType.value}`
+			`https://thegamechanger.azurewebsites.net/type/typeName/${inputGameType.value}`
 		)
 			.then((res) => res.json())
 			.then((data) => {
@@ -254,21 +266,23 @@ const findTypeByName = () => {
 
 const returnTypeByName = (name, id) => {
 	const newResult = document.createElement("li");
-	newResult.innerHTML = `<p>--- <span>Typ:</span> ${name}  --- <span>Id:</span> ${id}</p>`;
+	newResult.innerHTML = `<p>--- <span>Gatunek:</span> ${name}  --- <span>`;
 
 	ulListTypes.appendChild(newResult);
 	listOfTypes.style.display = "block";
 };
 
-const deleteType = () => {
+const deleteOneType = () => {
 	clearListsAndAlerts();
 
 	if (inputGameType.value === "") {
-		typeAlert.textContent = "Wpisz Id gatunku gry do usunięcia";
+		typeAlert.textContent = "Wpisz gatunek gry, który chcesz usunąć";
 		typeAlert.style.display = "block";
+	} else if (inputGameType.value !== "") {
+		deleteOneTypeAlert.classList.add("showDeleteOneTypeWindow");
 	} else {
 		fetch(
-			`https://thegamechanger.azurewebsites.net/genre/delete/${inputGameType.value}`,
+			`https://thegamechanger.azurewebsites.net/type/deleteOneType/${inputGameType.value}`,
 			{
 				method: "DELETE",
 			}
@@ -277,10 +291,14 @@ const deleteType = () => {
 	clearInputs();
 };
 
+const cancelDeleteOneTypeWindow = () => {
+	deleteOneTypeAlert.classList.remove("showDeleteOneTypeWindow");
+};
+
 const deleteAllTypesWindow = () => {
-	deleteAllWindow();
+	showDeleteAllWindow();
 	deleteAllAlert.classList.remove("showDeleteAllGamesAlert");
-	deleteAllWindowText.textContent =
+	deleteAllAlertText.textContent =
 		"Na pewno chcesz usunąć wszystkie gatunki gier?";
 	deleteAllAlert.classList.add("showDeleteAllTypesAlert");
 };
@@ -288,5 +306,9 @@ const deleteAllTypesWindow = () => {
 getAllTypesBtn.addEventListener("click", getAllTypes);
 addTypeBtn.addEventListener("click", addNewType);
 findTypeBtn.addEventListener("click", findTypeByName);
-deleteTypeBtn.addEventListener("click", deleteType);
+deleteTypeBtn.addEventListener("click", deleteOneType);
 deleteAllTypesBtn.addEventListener("click", deleteAllTypesWindow);
+cancelAlertDeleteOneTypeBtn.addEventListener(
+	"click",
+	cancelDeleteOneTypeWindow
+);

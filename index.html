@@ -38,7 +38,7 @@
                 <input type="text" id="gameName" placeholder="   Wpisz tytuł gry, max 25 znaków..." maxlength="25"
                     class="input-style">
                 <!-- <label for="genreId">Id gatunku gry</label> -->
-                <input type="text" id="typeId" placeholder="   Wpisz Id gatunku gry..." class="input-style">
+                <input type="text" id="typeId" placeholder="   Wpisz gatunek gry..." class="input-style">
                 <div class="buttons">
                     <button class="find-game btn find">szukaj</button>
                     <button class="add-game btn add">dodaj</button>
@@ -70,13 +70,13 @@
 
         <section>
             <div class="listOfGames">
-                <h3>Lista gier</h3>
+                <h3>Lista Gier</h3>
                 <ul class="ulListGames">
                 </ul>
             </div>
 
             <div class="listOfTypes">
-                <h3>Lista Typów</h3>
+                <h3>Lista Gatunków</h3>
                 <ul class="ulListTypes">
                 </ul>
             </div>
@@ -84,13 +84,23 @@
     </div>
 
     <section>
-        <div class="deleteAllAlert">
-            <p class="deleteAllWindowText">Czy na pewno chcesz usunąć wszystkie gry?</p>
+        <div class="deleteAlertWindow deleteAllAlert">
+            <p class="deleteWindowText deleteAllAlertText">Czy na pewno chcesz usunąć wszystkie gry?</p>
 
-            <button class="confirmAlertDeleteAll btn ">Usuń</button>
-            <button class="cancelAlertDeleteAll btn">Anuluj</button>
+            <button class="confirmAlertDelete confirmAlertDeleteAll btn ">Usuń</button>
+            <button class="cancelAlertDelete cancelAlertDeleteAll btn">Anuluj</button>
 
 
+        </div>
+    </section>
+    <section class="deleteOneTypeWindow">
+        <div class="deleteAlertWindow deleteOneTypeAlert">
+            <p class="deleteWindowText">
+                Do wybranego gatunku należy więcej niż jedna gra. Usunięcie go usunie również wszystkie powiązane gry.
+            </p>
+
+            <button class="confirmAlertDelete confirmAlertDeleteOneType btn ">Usuń</button>
+            <button class="cancelAlertDelete cancelAlertDeleteOneType btn">Anuluj</button>
         </div>
     </section>
 
