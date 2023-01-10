@@ -233,17 +233,27 @@ const addNewType = () => {
 
 	if (inputGameType.value === "") {
 		showTypeAlert("Wpisz nazwę nowego gatunku gry");
+	} else {
+		fetch(`https://thegamechanger.azurewebsites.net/type`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: `${inputGameType.value}`,
+			}),
+		})
+		.then(res => res.json().then(data => ({status: res.status, body: data})))
+		.then(obj => {
+			console.log(obj);
+			if(obj.status === 409){
+				showTypeAlert(obj.body.error);
+			}
+			else{
+				returnTypeByName(obj.body.name);
+			}
+		})
 	}
-
-	fetch(`https://thegamechanger.azurewebsites.net/type`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			name: `${inputGameType.value}`,
-		}),
-	});
 
 	clearInputs();
 };
