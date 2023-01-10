@@ -33,7 +33,7 @@
                 <div class="headerH2">
                     <h2>tytuł gry</h2>
                 </div>
-                <button class="getAllGames all">Wszystko</button>
+                <button class="getAllGames allGamesAndTypes">Wszystko</button>
                 <!-- <label for="gameName">Tytuł gry</label> -->
                 <input type="text" id="gameName" placeholder="   Wpisz tytuł gry, max 25 znaków..." maxlength="25"
                     class="input-style">
@@ -44,7 +44,7 @@
                     <button class="add-game btn add">dodaj</button>
                     <button class="delete-game btn delete">usuń</button>
                 </div>
-                <div class="gameAlert">Wpisz tytuł gry</div>
+                <div class="gameAndTypeAlert gameAlert"></div>
                 <button class="deleteAllGames deleteAll">usuń wszystko</button>
             </div>
 
@@ -54,16 +54,17 @@
                     <h2>gatunek</h2>
                 </div>
 
-                <button class="getAllTypes all">Wszystko</button>
+                <button class="getAllTypes allGamesAndTypes">Wszystko</button>
                 <!-- <label for="gameType">Typ gry</label> -->
                 <input type="text" id="gameType" placeholder="   Wpisz gatunek gry, max 25 znaków..." maxlength="25"
                     class="input-style">
-                <div class="buttons">
+                <div class="buttons typeButtons">
                     <button class="find-type btn find">szukaj</button>
                     <button class="add-type btn add">dodaj</button>
                     <button class="delete-type btn delete">usuń</button>
+                    <button class="gamesForType btn gamesForTypBtn">gry/typ</button>
                 </div>
-                <div class="typeAlert">Wpisz gatunek gry</div>
+                <div class="gameAndTypeAlert typeAlert"></div>
                 <button class="deleteAllTypes deleteAll">usuń wszystko</button>
             </div>
         </section>
@@ -95,8 +96,8 @@
     </section>
     <section class="deleteOneTypeWindow">
         <div class="deleteAlertWindow deleteOneTypeAlert">
-            <p class="deleteWindowText">
-                Do wybranego gatunku należy więcej niż jedna gra. Usunięcie go usunie również wszystkie powiązane gry.
+            <p class="deleteWindowText deleteOneTypeAlertText">
+                
             </p>
 
             <button class="confirmAlertDelete confirmAlertDeleteOneType btn ">Usuń</button>
