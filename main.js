@@ -48,12 +48,18 @@ const getAllGames = () => {
 	clearListsAndAlerts();
 
 	fetch("https://thegamechanger.azurewebsites.net/game")
-		.then((response) => response.json())
-		.then((data) => {
-			for (let i = 0; i < data.length; i++) {
-				returnAllGames(i + 1, data[i].name, data[i].type);
+		.then((res) =>
+			res.json().then((data) => ({ status: res.status, body: data }))
+		)
+		.then((obj) => {
+			if (obj.status === 200) {
+				for (let i = 0; i < obj.body.length; i++)
+					returnAllGames(i + 1, obj.body[i].name, obj.body[i].type);
 			}
-		});
+			else{
+				showGameAlert(obj.body.error)
+			}
+		}).catch((error) => showGameAlert(error));
 
 	clearInputs();
 };
@@ -74,7 +80,6 @@ const addNewGame = () => {
 	} else {
 		fetch(`https://thegamechanger.azurewebsites.net/game/newGame`, {
 			method: "POST",
-			credentials: "same-origin",
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -82,7 +87,17 @@ const addNewGame = () => {
 				name: `${inputGameName.value}`,
 				type: `${inputTypeId.value}`,
 			}),
-		});
+		})
+		.then(res => res.json().then(data => ({status: res.status, body: data})))
+		.then(obj => {
+			if(obj.status === 201){
+				showGameAlert("Nowa gra została dodana");
+				returnGameByName(obj.body.name, obj.body.type);
+			}
+			else{
+				showGameAlert(obj.body.error)
+			}
+		}).catch((error) => showGameAlert(error));
 	}
 
 	clearInputs();
@@ -103,9 +118,17 @@ const deleteGame = () => {
 				name: `${inputGameName.value}`,
 				type: `${inputTypeId.value}`,
 			}),
-		});
+		}).then((res) => {
+			if (res.status === 204) {
+				showGameAlert(`Gra: ${inputGameName.value}, została usunięta.`);
+			} else {
+				res.json().then((data) => {
+					showGameAlert(data.error);
+				});
+			}
+			clearInputs();
+		}).catch((error) => showGameAlert(error));
 	}
-	clearInputs();
 };
 
 const findGameByName = () => {
@@ -117,10 +140,17 @@ const findGameByName = () => {
 		fetch(
 			`https://thegamechanger.azurewebsites.net/game/gameName/${inputGameName.value}`
 		)
-			.then((res) => res.json())
-			.then((data) => {
-				returnGameByName(data.name, data.type);
-			});
+			.then((res) =>
+				res.json().then((data) => ({ status: res.status, body: data }))
+			)
+			.then((obj) => {
+				if (obj.status === 200) {
+					returnGameByName(obj.body.name, obj.body.type);
+				} else {
+					showGameAlert(obj.body.error);
+				}
+			})
+			.catch((error) => showGameAlert(error));
 	}
 
 	clearInputs();
@@ -172,11 +202,11 @@ const deleteAllGamesOrTypes = () => {
 	if (deleteAllAlert.classList.contains("showDeleteAllGamesAlert")) {
 		fetch("https://thegamechanger.azurewebsites.net/game/deleteAll", {
 			method: "DELETE",
-		});
+		}).catch((error) => showGameAlert(error));
 	} else if (deleteAllAlert.classList.contains("showDeleteAllTypesAlert")) {
 		fetch("https://thegamechanger.azurewebsites.net/genre/deleteAll", {
 			method: "DELETE",
-		});
+		}).catch((error) => showTypeAlert(error));
 	}
 
 	cancelDeleteAllWindow();
@@ -211,12 +241,18 @@ const getAllTypes = () => {
 	clearListsAndAlerts();
 
 	fetch("https://thegamechanger.azurewebsites.net/type")
-		.then((response) => response.json())
-		.then((data) => {
-			for (let i = 0; i < data.length; i++) {
-				retrunAllTypes(i + 1, data[i].name);
+		.then((res) =>
+			res.json().then((data) => ({ status: res.status, body: data }))
+		)
+		.then((obj) => {
+			if (obj.status === 200) {
+				for (let i = 0; i < obj.body.length; i++)
+					retrunAllTypes(i + 1, obj.body[i].name);
+			} else {
+				showGameAlert(obj.body.error);
 			}
-		});
+		})
+		.catch((error) => showTypeAlert(error));
 
 	clearInputs();
 };
@@ -243,16 +279,18 @@ const addNewType = () => {
 				name: `${inputGameType.value}`,
 			}),
 		})
-		.then(res => res.json().then(data => ({status: res.status, body: data})))
-		.then(obj => {
-			console.log(obj);
-			if(obj.status === 409){
-				showTypeAlert(obj.body.error);
-			}
-			else{
-				returnTypeByName(obj.body.name);
-			}
-		})
+			.then((res) =>
+				res.json().then((data) => ({ status: res.status, body: data }))
+			)
+			.then((obj) => {
+				if (obj.status === 409) {
+					showTypeAlert(obj.body.error);
+				} else {
+					showTypeAlert("Dodano nowy gatunek");
+					returnTypeByName(obj.body.name);
+				}
+			})
+			.catch((error) => showTypeAlert(error));
 	}
 
 	clearInputs();
@@ -272,12 +310,12 @@ const findTypeByName = () => {
 			)
 			.then((obj) => {
 				if (obj.status === 404) {
-					typeAlert.textContent = obj.body.error;
-					typeAlert.style.display = "block";
+					showTypeAlert(obj.body.error);
 				} else {
 					returnTypeByName(obj.body.name);
 				}
-			});
+			})
+			.catch((error) => showTypeAlert(error));
 	}
 	clearInputs();
 };
@@ -303,18 +341,19 @@ const deleteAllGamesRelatedToOneType = () => {
 				res.json().then((data) => ({ status: res.status, body: data }))
 			)
 			.then((obj) => {
-				if (obj.status === 404) {
-					showTypeAlert(obj.body.error);
-				} else if (obj.body === 1) {
+				if (obj.body === 1) {
 					const text = `Gatunek: ${inputGameType.value}, jest powiązany z 1 grą. Usunięcie go usunie również powiązaną grę.`;
 					showDeleteOneTypeWindow(text);
 				} else if (obj.body > 1) {
 					const text = `Gatunek: ${inputGameType.value}, jest powiązany z ${obj.body} grami. Usunięcie go usunie również wszystkie powiązane gry.`;
 					showDeleteOneTypeWindow(text);
-				} else {
+				} else if (obj.body === 0) {
 					deleteOneType();
+				} else {
+					showTypeAlert(obj.body.error);
 				}
-			});
+			})
+			.catch((error) => showTypeAlert(error));
 	}
 };
 
@@ -324,10 +363,18 @@ const deleteOneType = () => {
 		{
 			method: "DELETE",
 		}
-	);
-
-	cancelDeleteOneTypeWindow();
-	clearInputs();
+	)
+		.then((res) => {
+			if (res.status === 204) {
+				showTypeAlert(`Gatunek: ${inputGameType.value}, został usunięty`);
+			} else {
+				res.json().then((data) => {
+					showTypeAlert(data.error);
+				});
+			}
+			cancelDeleteOneTypeWindow();
+		})
+		.catch((error) => showTypeAlert(error));
 };
 
 const getAllGamesForOneType = () => {
@@ -343,15 +390,16 @@ const getAllGamesForOneType = () => {
 				res.json().then((data) => ({ status: res.status, body: data }))
 			)
 			.then((obj) => {
-				if (obj.status === 404) {
-					showTypeAlert(obj.body.error);
-				} else {
+				if (obj.status === 200) {
 					for (let i = 0; i < obj.body.length; i++) {
 						returnAllGamesForOneType(i + 1, obj.body[i].name, obj.body[i].type);
 					}
+				} else {
+					showTypeAlert(obj.body.error);
 				}
 				clearInputs();
-			});
+			})
+			.catch((error) => showTypeAlert(error));
 	}
 };
 
@@ -366,6 +414,7 @@ const returnAllGamesForOneType = (number, name, type) => {
 const cancelDeleteOneTypeWindow = () => {
 	deleteOneTypeAlert.classList.remove("showDeleteOneTypeWindow");
 	shadowImageForAlert.style.display = "none";
+	clearInputs();
 };
 
 const deleteAllTypesWindow = () => {
