@@ -43,6 +43,7 @@
                     <button class="find-game btn find">szukaj</button>
                     <button class="add-game btn add">dodaj</button>
                     <button class="delete-game btn delete">usuń</button>
+                    <button class="update-game btn updateGameBtn">aktualizuj</button>
                 </div>
                 <div class="gameAndTypeAlert gameAlert"></div>
                 <button class="deleteAllGames deleteAll">usuń wszystko</button>
@@ -63,6 +64,8 @@
                     <button class="add-type btn add">dodaj</button>
                     <button class="delete-type btn delete">usuń</button>
                     <button class="gamesForType btn gamesForTypBtn">gry/typ</button>
+                    <button class="update-game btn updateGameBtn">aktualizuj</button>
+
                 </div>
                 <div class="gameAndTypeAlert typeAlert"></div>
                 <button class="deleteAllTypes deleteAll">usuń wszystko</button>
@@ -85,8 +88,8 @@
     </div>
 
     <section>
-        <div class="deleteAlertWindow deleteAllAlert">
-            <p class="deleteWindowText deleteAllAlertText">Czy na pewno chcesz usunąć wszystkie gry?</p>
+        <div class="externalAlertWindow deleteAllAlert">
+            <p class="deleteWindowText deleteAllAlertText"></p>
 
             <button class="confirmAlertDelete confirmAlertDeleteAll btn ">Usuń</button>
             <button class="cancelAlertDelete cancelAlertDeleteAll btn">Anuluj</button>
@@ -95,13 +98,22 @@
         </div>
     </section>
     <section class="deleteOneTypeWindow">
-        <div class="deleteAlertWindow deleteOneTypeAlert">
+        <div class="externalAlertWindow deleteOneTypeAlert">
             <p class="deleteWindowText deleteOneTypeAlertText">
-                
             </p>
 
             <button class="confirmAlertDelete confirmAlertDeleteOneType btn ">Usuń</button>
             <button class="cancelAlertDelete cancelAlertDeleteOneType btn">Anuluj</button>
+        </div>
+    </section>
+
+    <section class="updateGameAndTypeWindow">
+        <div class="externalAlertWindow">
+            <div><p class="updateGameAndTypeWindowText">Aktualizacja tytułu gry</p></div>
+            <input type="text" placeholder=" Wpisz aktualną nazwę..." class="input-style inputOldName">
+            <input type="text" placeholder=" Wpisz nową nazwę...max 25 znaków..."class="input-style inputNewName">
+            <button class="confirmAlertDelete btn saveUpdateBtn">Zapisz</button>
+            <button class="cancelAlertDelete btn cancelUpdateBtn">Anuluj</button>
         </div>
     </section>
 
