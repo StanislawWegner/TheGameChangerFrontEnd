@@ -7,12 +7,14 @@ const allButtons = document.querySelectorAll("button");
 const addGameBtn = document.querySelector(".add-game");
 const deleteGameBtn = document.querySelector(".delete-game");
 const findGameBtn = document.querySelector(".find-game");
+const updateGameBtn = document.querySelector(".updateGameBtn");
 const deleteAllGamesBtn = document.querySelector(".deleteAllGames");
 
 const addTypeBtn = document.querySelector(".add-type");
 const findTypeBtn = document.querySelector(".find-type");
 const deleteTypeBtn = document.querySelector(".delete-type");
 const gamesForTypBtn = document.querySelector(".gamesForTypBtn");
+const updateTypeBtn = document.querySelector(".updateTypeBtn");
 const deleteAllTypesBtn = document.querySelector(".deleteAllTypes");
 
 const inputGameName = document.querySelector("#gameName");
@@ -44,6 +46,18 @@ const deleteOneTypeAlertText = document.querySelector(
 	".deleteOneTypeAlertText"
 );
 
+const updateGameAndTypeAlertWindow = document.querySelector(
+	".updateGameAndTypeAlertWindow"
+);
+const updateGameAndTypeWindowText = document.querySelector(
+	".updateGameAndTypeWindowText"
+);
+const cancelUpdateBtn = document.querySelector(".cancelUpdateBtn");
+const inputOldName = document.querySelector(".inputOldName");
+const inputNewName = document.querySelector(".inputNewName");
+const saveUpdateBtn = document.querySelector(".saveUpdateBtn");
+const updateAlert = document.querySelector(".updateAlert");
+
 const getAllGames = () => {
 	clearListsAndAlerts();
 
@@ -55,11 +69,11 @@ const getAllGames = () => {
 			if (obj.status === 200) {
 				for (let i = 0; i < obj.body.length; i++)
 					returnAllGames(i + 1, obj.body[i].name, obj.body[i].type);
+			} else {
+				showGameAlert(obj.body.error);
 			}
-			else{
-				showGameAlert(obj.body.error)
-			}
-		}).catch((error) => showGameAlert(error));
+		})
+		.catch((error) => showGameAlert(error));
 
 	clearInputs();
 };
@@ -88,16 +102,18 @@ const addNewGame = () => {
 				type: `${inputTypeId.value}`,
 			}),
 		})
-		.then(res => res.json().then(data => ({status: res.status, body: data})))
-		.then(obj => {
-			if(obj.status === 201){
-				showGameAlert("Nowa gra została dodana");
-				returnGameByName(obj.body.name, obj.body.type);
-			}
-			else{
-				showGameAlert(obj.body.error)
-			}
-		}).catch((error) => showGameAlert(error));
+			.then((res) =>
+				res.json().then((data) => ({ status: res.status, body: data }))
+			)
+			.then((obj) => {
+				if (obj.status === 201) {
+					showGameAlert("Nowa gra została dodana");
+					returnGameByName(obj.body.name, obj.body.type);
+				} else {
+					showGameAlert(obj.body.error);
+				}
+			})
+			.catch((error) => showGameAlert(error));
 	}
 
 	clearInputs();
@@ -118,16 +134,18 @@ const deleteGame = () => {
 				name: `${inputGameName.value}`,
 				type: `${inputTypeId.value}`,
 			}),
-		}).then((res) => {
-			if (res.status === 204) {
-				showGameAlert(`Gra: ${inputGameName.value}, została usunięta.`);
-			} else {
-				res.json().then((data) => {
-					showGameAlert(data.error);
-				});
-			}
-			clearInputs();
-		}).catch((error) => showGameAlert(error));
+		})
+			.then((res) => {
+				if (res.status === 204) {
+					showGameAlert(`Gra: ${inputGameName.value}, została usunięta.`);
+				} else {
+					res.json().then((data) => {
+						showGameAlert(data.error);
+					});
+				}
+				clearInputs();
+			})
+			.catch((error) => showGameAlert(error));
 	}
 };
 
@@ -164,6 +182,109 @@ const returnGameByName = (name, type) => {
 	listOfGames.style.display = "block";
 };
 
+const saveUpdateGameOrType = () => {
+	if (inputOldName.value === "" || inputNewName.value === "") {
+		showUpdateAlert("Wpisz obecną i nową nazwę");
+	} else if (
+		inputOldName.value !== "" &&
+		inputNewName.value !== "" &&
+		updateGameAndTypeAlertWindow.classList.contains("showUpdateGameWindow")
+	) {
+		console.log("gra");
+
+		fetch("https://thegamechanger.azurewebsites.net/game/update", {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: `${inputOldName.value}`,
+				newName: `${inputNewName.value}`,
+			}),
+		})
+			.then((res) =>
+				res.json().then((data) => ({ status: res.status, body: data }))
+			)
+			.then((obj) => {
+				if (obj.status === 200) {
+					returnGameByName(obj.body.name, obj.body.type);
+					showGameAlert("Zaktualizowano nazwę gry");
+					cancelUpdateWindow();
+				} else {
+					showUpdateAlert(obj.body.error);
+				}
+			})
+			.catch((error) => showGameAlert(error));
+	} else if (
+		inputOldName.value !== "" &&
+		inputNewName.value !== "" &&
+		updateGameAndTypeAlertWindow.classList.contains("showUpdateTypeWindow")
+	) {
+		console.log("gra");
+
+		fetch("https://thegamechanger.azurewebsites.net/type/update", {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: `${inputOldName.value}`,
+				newName: `${inputNewName.value}`,
+			}),
+		})
+			.then((res) =>
+				res.json().then((data) => ({ status: res.status, body: data }))
+			)
+			.then((obj) => {
+				if (obj.status === 200) {
+					returnTypeByName(obj.body.name);
+					showTypeAlert("Zaktualizowano nazwę gatunku");
+					cancelUpdateWindow();
+				} else {
+					showUpdateAlert(obj.body.error);
+				}
+			})
+			.catch((error) => showGameAlert(error));
+	}
+};
+
+const deleteAllGamesOrTypes = () => {
+	if (deleteAllAlert.classList.contains("showDeleteAllGamesAlert")) {
+		fetch("https://thegamechanger.azurewebsites.net/game/deleteAll", {
+			method: "DELETE",
+		}).catch((error) => showGameAlert(error));
+	} else if (deleteAllAlert.classList.contains("showDeleteAllTypesAlert")) {
+		fetch("https://thegamechanger.azurewebsites.net/genre/deleteAll", {
+			method: "DELETE",
+		}).catch((error) => showTypeAlert(error));
+	}
+
+	cancelDeleteAllWindow();
+};
+
+const showUpdateGameNameWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+	updateGameAndTypeAlertWindow.classList.add("showUpdateGameWindow");
+	updateGameAndTypeWindowText.textContent = "Aktualizacja tytułu gry";
+};
+
+const showUpdateTypeNameWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+	updateGameAndTypeAlertWindow.classList.add("showUpdateTypeWindow");
+	updateGameAndTypeWindowText.textContent = "Aktualizacja nazwy gatunku";
+};
+
+const cancelUpdateWindow = () => {
+	updateGameAndTypeAlertWindow.classList.remove("showUpdateTypeWindow");
+	updateGameAndTypeAlertWindow.classList.remove("showUpdateGameWindow");
+	shadowImageForAlert.style.display = "none";
+	updateAlert.style.display = "none";
+};
+
 const clearListsAndAlerts = () => {
 	ulListGames.innerHTML = "";
 	listOfGames.style.display = "none";
@@ -177,6 +298,8 @@ const clearInputs = () => {
 	inputGameName.value = "";
 	inputTypeId.value = "";
 	inputGameType.value = "";
+	inputOldName.value = "";
+	inputNewName.value = "";
 };
 
 const showDeleteAllWindow = () => {
@@ -198,23 +321,14 @@ const cancelDeleteAllWindow = () => {
 	shadowImageForAlert.style.display = "none";
 };
 
-const deleteAllGamesOrTypes = () => {
-	if (deleteAllAlert.classList.contains("showDeleteAllGamesAlert")) {
-		fetch("https://thegamechanger.azurewebsites.net/game/deleteAll", {
-			method: "DELETE",
-		}).catch((error) => showGameAlert(error));
-	} else if (deleteAllAlert.classList.contains("showDeleteAllTypesAlert")) {
-		fetch("https://thegamechanger.azurewebsites.net/genre/deleteAll", {
-			method: "DELETE",
-		}).catch((error) => showTypeAlert(error));
-	}
-
-	cancelDeleteAllWindow();
-};
-
 const showGameAlert = (text) => {
 	gameAlert.textContent = text;
 	gameAlert.style.display = "block";
+};
+
+const showUpdateAlert = (text) => {
+	updateAlert.textContent = text;
+	updateAlert.style.display = "block";
 };
 getAllGamesBtn.addEventListener("click", getAllGames);
 addGameBtn.addEventListener("click", addNewGame);
@@ -223,6 +337,10 @@ findGameBtn.addEventListener("click", findGameByName);
 deleteAllGamesBtn.addEventListener("click", deleteAllGamesWindow);
 cancelAlertDeleteAllBtn.addEventListener("click", cancelDeleteAllWindow);
 confirmAlertDeleteAllBtn.addEventListener("click", deleteAllGamesOrTypes);
+updateGameBtn.addEventListener("click", showUpdateGameNameWindow);
+updateTypeBtn.addEventListener("click", showUpdateTypeNameWindow);
+cancelUpdateBtn.addEventListener("click", cancelUpdateWindow);
+saveUpdateBtn.addEventListener("click", saveUpdateGameOrType);
 
 // Type Of Game Functions
 //
@@ -249,7 +367,7 @@ const getAllTypes = () => {
 				for (let i = 0; i < obj.body.length; i++)
 					retrunAllTypes(i + 1, obj.body[i].name);
 			} else {
-				showGameAlert(obj.body.error);
+				showTypeAlert(obj.body.error);
 			}
 		})
 		.catch((error) => showTypeAlert(error));
