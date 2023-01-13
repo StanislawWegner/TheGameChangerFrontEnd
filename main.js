@@ -190,8 +190,6 @@ const saveUpdateGameOrType = () => {
 		inputNewName.value !== "" &&
 		updateGameAndTypeAlertWindow.classList.contains("showUpdateGameWindow")
 	) {
-		console.log("gra");
-
 		fetch("https://thegamechanger.azurewebsites.net/game/update", {
 			method: "PUT",
 			headers: {
@@ -252,10 +250,20 @@ const deleteAllGamesOrTypes = () => {
 	if (deleteAllAlert.classList.contains("showDeleteAllGamesAlert")) {
 		fetch("https://thegamechanger.azurewebsites.net/game/deleteAll", {
 			method: "DELETE",
-		}).catch((error) => showGameAlert(error));
+		})
+			.then((res) => {
+				if (res.status === 204) {
+					showGameAlert("Wszystkie gry zostały usunięte");
+				}
+			})
+			.catch((error) => showGameAlert(error));
 	} else if (deleteAllAlert.classList.contains("showDeleteAllTypesAlert")) {
-		fetch("https://thegamechanger.azurewebsites.net/genre/deleteAll", {
+		fetch("https://thegamechanger.azurewebsites.net/type/deleteAll", {
 			method: "DELETE",
+		}).then((res) => {
+			if (res.status === 204) {
+				showTypeAlert("Wszystkie gatunki zostały usunięte");
+			}
 		}).catch((error) => showTypeAlert(error));
 	}
 
@@ -401,11 +409,11 @@ const addNewType = () => {
 				res.json().then((data) => ({ status: res.status, body: data }))
 			)
 			.then((obj) => {
-				if (obj.status === 409) {
-					showTypeAlert(obj.body.error);
-				} else {
+				if (obj.status === 201) {
 					showTypeAlert("Dodano nowy gatunek");
 					returnTypeByName(obj.body.name);
+				} else {
+					showTypeAlert(obj.body.error);
 				}
 			})
 			.catch((error) => showTypeAlert(error));
@@ -510,6 +518,7 @@ const getAllGamesForOneType = () => {
 			.then((obj) => {
 				if (obj.status === 200) {
 					for (let i = 0; i < obj.body.length; i++) {
+						showTypeAlert(`Do gatunku "${inputGameType.value}" są przypisane (${obj.body.length}) gry`)
 						returnAllGamesForOneType(i + 1, obj.body[i].name, obj.body[i].type);
 					}
 				} else {
