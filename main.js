@@ -54,17 +54,23 @@ const deleteOneTypeAlertText = document.querySelector(
 	".deleteOneTypeAlertText"
 );
 
-const updateGameAndTypeAlertWindow = document.querySelector(
-	".updateGameAndTypeAlertWindow"
+const updateGameAlertWindow = document.querySelector(
+	".updateGameAlertWindow"
 );
-const updateGameAndTypeWindowText = document.querySelector(
-	".updateGameAndTypeWindowText"
+const updateTypeAlertWindow = document.querySelector(
+	".updateTypeAlertWindow"
 );
-const cancelUpdateBtn = document.querySelector(".cancelUpdateBtn");
-const inputOldName = document.querySelector(".inputOldName");
-const inputNewName = document.querySelector(".inputNewName");
-const saveUpdateBtn = document.querySelector(".saveUpdateBtn");
-const updateAlert = document.querySelector(".updateAlert");
+
+const cancelUpdateGameBtn = document.querySelector(".cancelUpdateGameBtn");
+const cancelUpdateTypeBtn = document.querySelector(".cancelUpdateTypeBtn")
+const inputOldGameName = document.querySelector(".inputOldGameName");
+const inputNewGameName = document.querySelector(".inputNewGameName");
+const inputOldTypeName = document.querySelector(".inputOldTypeName");
+const inputNewTypeName = document.querySelector(".inputNewTypeName");
+const saveUpdateGameBtn = document.querySelector(".saveUpdateGameBtn");
+const saveUpdateTypeBtn = document.querySelector(".saveUpdateTypeBtn");
+const updateGameAlert = document.querySelector(".updateGameAlert");
+const updateTypeAlert = document.querySelector(".updateTypeAlert");
 
 const getAllGames = () => {
 	clearListsAndAlerts();
@@ -190,22 +196,26 @@ const returnGameByName = (name, type) => {
 	listOfGames.style.display = "block";
 };
 
-const saveUpdateGameOrType = () => {
-	if (inputOldName.value === "" || inputNewName.value === "") {
-		showUpdateAlert("Wpisz obecną i nową nazwę");
-	} else if (
-		inputOldName.value !== "" &&
-		inputNewName.value !== "" &&
-		updateGameAndTypeAlertWindow.classList.contains("showUpdateGameWindow")
-	) {
+const showUpdateGameNameWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+	updateGameAlertWindow.classList.add("showUpdateGameWindow");
+};
+
+const saveUpdateGame = () => {
+	if (inputOldGameName.value === "" || inputNewGameName.value === "") {
+				showUpdateGameAlert("Wpisz obecną i nową nazwę");
+	}
+	else{
 		fetch("https://thegamechanger.azurewebsites.net/game/update", {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				name: `${inputOldName.value}`,
-				newName: `${inputNewName.value}`,
+				name: `${inputOldGameName.value}`,
+				newName: `${inputNewGameName.value}`,
 			}),
 		})
 			.then((res) =>
@@ -215,42 +225,16 @@ const saveUpdateGameOrType = () => {
 				if (obj.status === 200) {
 					returnGameByName(obj.body.name, obj.body.type);
 					showGameAlert("Zaktualizowano nazwę gry");
-					cancelUpdateWindow();
+					cancelUpdateGameWindow();
 				} else {
-					showUpdateAlert(obj.body.error);
-				}
-			})
-			.catch((error) => showGameAlert(error));
-	} else if (
-		inputOldName.value !== "" &&
-		inputNewName.value !== "" &&
-		updateGameAndTypeAlertWindow.classList.contains("showUpdateTypeWindow")
-	) {
-		fetch("https://thegamechanger.azurewebsites.net/type/update", {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				name: `${inputOldName.value}`,
-				newName: `${inputNewName.value}`,
-			}),
-		})
-			.then((res) =>
-				res.json().then((data) => ({ status: res.status, body: data }))
-			)
-			.then((obj) => {
-				if (obj.status === 200) {
-					returnTypeByName(obj.body.name);
-					showTypeAlert("Zaktualizowano nazwę gatunku");
-					cancelUpdateWindow();
-				} else {
-					showUpdateAlert(obj.body.error);
+					showUpdateGameAlert(obj.body.error);
 				}
 			})
 			.catch((error) => showGameAlert(error));
 	}
-};
+}
+
+
 
 const showDeleteAllGamesWindow = () => {
 	clearListsAndAlerts();
@@ -273,27 +257,12 @@ const deleteAllGames = () => {
 	cancelDeleteAllGamesWindow();
 };
 
-const showUpdateGameNameWindow = () => {
-	clearListsAndAlerts();
-	clearInputs();
-	shadowImageForAlert.style.display = "block";
-	updateGameAndTypeAlertWindow.classList.add("showUpdateGameWindow");
-	updateGameAndTypeWindowText.textContent = "Aktualizacja tytułu gry";
-};
 
-const showUpdateTypeNameWindow = () => {
-	clearListsAndAlerts();
-	clearInputs();
-	shadowImageForAlert.style.display = "block";
-	updateGameAndTypeAlertWindow.classList.add("showUpdateTypeWindow");
-	updateGameAndTypeWindowText.textContent = "Aktualizacja nazwy gatunku";
-};
 
-const cancelUpdateWindow = () => {
-	updateGameAndTypeAlertWindow.classList.remove("showUpdateTypeWindow");
-	updateGameAndTypeAlertWindow.classList.remove("showUpdateGameWindow");
+const cancelUpdateGameWindow = () => {
+	updateGameAlertWindow.classList.remove("showUpdateGameWindow");
 	shadowImageForAlert.style.display = "none";
-	updateAlert.style.display = "none";
+	updateGameAlert.style.display = "none";
 };
 
 const clearListsAndAlerts = () => {
@@ -309,8 +278,10 @@ const clearInputs = () => {
 	inputGameName.value = "";
 	inputTypeId.value = "";
 	inputGameType.value = "";
-	inputOldName.value = "";
-	inputNewName.value = "";
+	inputOldGameName.value = "";
+	inputNewGameName.value = "";
+	inputOldTypeName.value = "";
+	inputNewTypeName.value = "";
 };
 
 const cancelDeleteAllGamesWindow = () => {
@@ -323,9 +294,9 @@ const showGameAlert = (text) => {
 	gameAlert.style.display = "block";
 };
 
-const showUpdateAlert = (text) => {
-	updateAlert.textContent = text;
-	updateAlert.style.display = "block";
+const showUpdateGameAlert = (text) => {
+	updateGameAlert.textContent = text;
+	updateGameAlert.style.display = "block";
 };
 getAllGamesBtn.addEventListener("click", getAllGames);
 addGameBtn.addEventListener("click", addNewGame);
@@ -338,9 +309,8 @@ cancelAlertDeleteAllGamesBtn.addEventListener(
 );
 confirmAlertDeleteAllGamesBtn.addEventListener("click", deleteAllGames);
 updateGameBtn.addEventListener("click", showUpdateGameNameWindow);
-updateTypeBtn.addEventListener("click", showUpdateTypeNameWindow);
-cancelUpdateBtn.addEventListener("click", cancelUpdateWindow);
-saveUpdateBtn.addEventListener("click", saveUpdateGameOrType);
+saveUpdateGameBtn.addEventListener("click", saveUpdateGame)
+cancelUpdateGameBtn.addEventListener("click", cancelUpdateGameWindow);
 
 // Type Of Game Functions
 //
@@ -524,6 +494,47 @@ const getAllGamesForOneType = () => {
 	}
 };
 
+const showUpdateTypeWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+	updateTypeAlertWindow.classList.add("showUpdateTypeWindow");
+};
+
+const saveUpdateType = () => {
+	if (inputOldTypeName.value === "" || inputNewTypeName.value === "") {
+				showUpdateTypeAlert("Wpisz obecną i nową nazwę");
+	}
+	else{
+		fetch("https://thegamechanger.azurewebsites.net/type/update", {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: `${inputOldTypeName.value}`,
+				newName: `${inputNewTypeName.value}`,
+			}),
+		})
+			.then((res) =>
+				res.json().then((data) => ({ status: res.status, body: data }))
+			)
+			.then((obj) => {
+				if (obj.status === 200) {
+					returnTypeByName(obj.body.name);
+					showTypeAlert("Zaktualizowano nazwę gatunku");
+					cancelUpdateTypeWindow();
+				} else {
+					showUpdateTypeAlert(obj.body.error);
+				}
+			})
+			.catch((error) => showGameAlert(error));
+	}
+}
+
+
+
+
 const returnAllGamesForOneType = (number, name, type) => {
 	const newResult = document.createElement("li");
 	newResult.innerHTML = `<p><span>Nr</span>: ${number} --- <span>Tytuł:</span> ${name}  --- <span>Gatunek:</span> ${type}`;
@@ -574,6 +585,17 @@ const cancelDeleteAllTypesWindow = () => {
 	shadowImageForAlert.style.display = "none";
 };
 
+const cancelUpdateTypeWindow = () => {
+	updateTypeAlertWindow.classList.remove("showUpdateTypeWindow");
+	shadowImageForAlert.style.display = "none";
+	updateTypeAlert.style.display = "none";
+};
+
+const showUpdateTypeAlert = (text) => {
+	updateTypeAlert.textContent = text;
+	updateTypeAlert.style.display = "block";
+};
+
 getAllTypesBtn.addEventListener("click", getAllTypes);
 addTypeBtn.addEventListener("click", addNewType);
 findTypeBtn.addEventListener("click", findTypeByName);
@@ -590,3 +612,6 @@ cancelAlertDeleteOneTypeBtn.addEventListener(
 );
 confirmAlertDeleteOneTypeBtn.addEventListener("click", deleteOneType);
 gamesForTypBtn.addEventListener("click", getAllGamesForOneType);
+updateTypeBtn.addEventListener("click", showUpdateTypeWindow);
+saveUpdateTypeBtn.addEventListener("click", saveUpdateType);
+cancelUpdateTypeBtn.addEventListener("click", cancelUpdateTypeWindow);

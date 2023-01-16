@@ -119,16 +119,31 @@
 
 
     <section class="updateGameAndTypeWindow">
-        <div class="externalAlertWindow updateGameAndTypeAlertWindow">
+        <div class="externalAlertWindow updateGameAlertWindow">
             <div>
-                <p class="updateGameAndTypeWindowText"></p>
+                <p class="updateGameAndTypeWindowText">Aktualizacja tytułu gry</p>
             </div>
-            <input type="text" maxlength="25" placeholder=" Wpisz aktualną nazwę..." class="input-style inputOldName">
+            <input type="text" maxlength="25" placeholder=" Wpisz aktualną nazwę..." class="input-style inputOldGameName">
             <input type="text" maxlength="25" placeholder=" Wpisz nową nazwę...max 25 znaków..."
-                class="input-style inputNewName">
-            <div class="gameAndTypeAlert updateAlert"></div>
-            <button class="confirmAlertDelete btn saveUpdateBtn">Zapisz</button>
-            <button class="cancelAlertDelete btn cancelUpdateBtn">Anuluj</button>
+                class="input-style inputNewGameName">
+            <div class="gameAndTypeAlert updateGameAlert"></div>
+            <button class="confirmAlertDelete btn saveUpdateGameBtn">Zapisz</button>
+            <button class="cancelAlertDelete btn cancelUpdateGameBtn">Anuluj</button>
+        </div>
+    </section>
+
+    
+    <section class="updateGameAndTypeWindow">
+        <div class="externalAlertWindow updateTypeAlertWindow">
+            <div>
+                <p class="updateGameAndTypeWindowText">Aktualizacja gatunku gry</p>
+            </div>
+            <input type="text" maxlength="25" placeholder=" Wpisz aktualną nazwę..." class="input-style inputOldTypeName">
+            <input type="text" maxlength="25" placeholder=" Wpisz nową nazwę...max 25 znaków..."
+                class="input-style inputNewTypeName">
+            <div class="gameAndTypeAlert updateTypeAlert"></div>
+            <button class="confirmAlertDelete btn saveUpdateTypeBtn">Zapisz</button>
+            <button class="cancelAlertDelete btn cancelUpdateTypeBtn">Anuluj</button>
         </div>
     </section>
 

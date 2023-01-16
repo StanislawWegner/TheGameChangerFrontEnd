@@ -341,11 +341,18 @@ li {
 	left: 5%;
 }
 
-.inputOldName {
+.inputOldGameName {
 	top: 40px;
 }
 
-.inputNewName {
+.inputNewGameName {
+	top: 90px;
+}
+.inputOldTypeName {
+	top: 40px;
+}
+
+.inputNewTypeName {
 	top: 90px;
 }
 
