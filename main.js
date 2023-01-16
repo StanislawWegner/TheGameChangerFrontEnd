@@ -1,7 +1,5 @@
 const getAllGamesBtn = document.querySelector(".getAllGames");
-const getAllTypesBtn = document.querySelector(".getAllTypes");
 const listOfGames = document.querySelector(".listOfGames");
-const listOfTypes = document.querySelector(".listOfTypes");
 
 const allButtons = document.querySelectorAll("button");
 const addGameBtn = document.querySelector(".add-game");
@@ -10,25 +8,14 @@ const findGameBtn = document.querySelector(".find-game");
 const updateGameBtn = document.querySelector(".updateGameBtn");
 const deleteAllGamesBtn = document.querySelector(".deleteAllGames");
 
-const addTypeBtn = document.querySelector(".add-type");
-const findTypeBtn = document.querySelector(".find-type");
-const deleteTypeBtn = document.querySelector(".delete-type");
-const gamesForTypBtn = document.querySelector(".gamesForTypBtn");
-const updateTypeBtn = document.querySelector(".updateTypeBtn");
-const deleteAllTypesBtn = document.querySelector(".deleteAllTypes");
-
 const inputGameName = document.querySelector("#gameName");
 const inputTypeId = document.querySelector("#typeId");
-const inputGameType = document.querySelector("#gameType");
 
 const ulListGames = document.querySelector(".ulListGames");
-const ulListTypes = document.querySelector(".ulListTypes");
 
 const gameAlert = document.querySelector(".gameAlert");
-const typeAlert = document.querySelector(".typeAlert");
 
 const deleteAllGamesAlert = document.querySelector(".deleteAllGamesAlert");
-const deleteAllTypesAlert = document.querySelector(".deleteAllTypesAlert");
 const shadowImageForAlert = document.querySelector(".shadowImageForAlert");
 const confirmAlertDeleteAllGamesBtn = document.querySelector(
 	".confirmAlertDeleteAllGames"
@@ -36,41 +23,16 @@ const confirmAlertDeleteAllGamesBtn = document.querySelector(
 const cancelAlertDeleteAllGamesBtn = document.querySelector(
 	".cancelAlertDeleteAllGames"
 );
-const confirmAlertDeleteAllTypesBtn = document.querySelector(
-	".confirmAlertDeleteAllTypes"
-);
-const cancelAlertDeleteAllTypesBtn = document.querySelector(
-	".cancelAlertDeleteAllTypes"
-);
-
-const deleteOneTypeAlert = document.querySelector(".deleteOneTypeAlert");
-const confirmAlertDeleteOneTypeBtn = document.querySelector(
-	".confirmAlertDeleteOneType"
-);
-const cancelAlertDeleteOneTypeBtn = document.querySelector(
-	".cancelAlertDeleteOneType"
-);
-const deleteOneTypeAlertText = document.querySelector(
-	".deleteOneTypeAlertText"
-);
 
 const updateGameAlertWindow = document.querySelector(
 	".updateGameAlertWindow"
 );
-const updateTypeAlertWindow = document.querySelector(
-	".updateTypeAlertWindow"
-);
 
 const cancelUpdateGameBtn = document.querySelector(".cancelUpdateGameBtn");
-const cancelUpdateTypeBtn = document.querySelector(".cancelUpdateTypeBtn")
 const inputOldGameName = document.querySelector(".inputOldGameName");
 const inputNewGameName = document.querySelector(".inputNewGameName");
-const inputOldTypeName = document.querySelector(".inputOldTypeName");
-const inputNewTypeName = document.querySelector(".inputNewTypeName");
 const saveUpdateGameBtn = document.querySelector(".saveUpdateGameBtn");
-const saveUpdateTypeBtn = document.querySelector(".saveUpdateTypeBtn");
 const updateGameAlert = document.querySelector(".updateGameAlert");
-const updateTypeAlert = document.querySelector(".updateTypeAlert");
 
 const getAllGames = () => {
 	clearListsAndAlerts();
@@ -151,7 +113,7 @@ const deleteGame = () => {
 		})
 			.then((res) => {
 				if (res.status === 204) {
-					showGameAlert(`Gra: ${inputGameName.value}, została usunięta.`);
+					showGameAlert(`Gra: "${inputGameName.value}", została usunięta.`);
 				} else {
 					res.json().then((data) => {
 						showGameAlert(data.error);
@@ -324,6 +286,74 @@ cancelUpdateGameBtn.addEventListener("click", cancelUpdateGameWindow);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+const getAllTypesBtn = document.querySelector(".getAllTypes");
+const listOfTypes = document.querySelector(".listOfTypes");
+
+const addTypeBtn = document.querySelector(".add-type");
+const findTypeBtn = document.querySelector(".find-type");
+const deleteTypeBtn = document.querySelector(".delete-type");
+const gamesForTypBtn = document.querySelector(".gamesForTypBtn");
+const updateTypeBtn = document.querySelector(".updateTypeBtn");
+const deleteAllTypesBtn = document.querySelector(".deleteAllTypes");
+
+const inputGameType = document.querySelector("#gameType");
+
+const ulListTypes = document.querySelector(".ulListTypes");
+
+const typeAlert = document.querySelector(".typeAlert");
+
+const deleteAllTypesAlert = document.querySelector(".deleteAllTypesAlert");
+const confirmAlertDeleteAllTypesBtn = document.querySelector(
+	".confirmAlertDeleteAllTypes"
+);
+const cancelAlertDeleteAllTypesBtn = document.querySelector(
+	".cancelAlertDeleteAllTypes"
+);
+
+const deleteOneTypeAlert = document.querySelector(".deleteOneTypeAlert");
+const confirmAlertDeleteOneTypeBtn = document.querySelector(
+	".confirmAlertDeleteOneType"
+);
+const cancelAlertDeleteOneTypeBtn = document.querySelector(
+	".cancelAlertDeleteOneType"
+);
+const deleteOneTypeAlertText = document.querySelector(
+	".deleteOneTypeAlertText"
+);
+
+const updateTypeAlertWindow = document.querySelector(
+	".updateTypeAlertWindow"
+);
+
+const cancelUpdateTypeBtn = document.querySelector(".cancelUpdateTypeBtn")
+const inputOldTypeName = document.querySelector(".inputOldTypeName");
+const inputNewTypeName = document.querySelector(".inputNewTypeName");
+const saveUpdateTypeBtn = document.querySelector(".saveUpdateTypeBtn");
+const updateTypeAlert = document.querySelector(".updateTypeAlert");
 
 const getAllTypes = () => {
 	clearListsAndAlerts();
@@ -430,10 +460,10 @@ const deleteAllGamesRelatedToOneType = () => {
 			)
 			.then((obj) => {
 				if (obj.body === 1) {
-					const text = `Gatunek: ${inputGameType.value}, jest powiązany z 1 grą. Usunięcie go usunie również powiązaną grę.`;
+					const text = `Gatunek: "${inputGameType.value}", jest powiązany z 1 grą. Usunięcie go usunie również powiązaną grę.`;
 					showDeleteOneTypeWindow(text);
 				} else if (obj.body > 1) {
-					const text = `Gatunek: ${inputGameType.value}, jest powiązany z ${obj.body} grami. Usunięcie go usunie również wszystkie powiązane gry.`;
+					const text = `Gatunek: "${inputGameType.value}", jest powiązany z ${obj.body} grami. Usunięcie go usunie również wszystkie powiązane gry.`;
 					showDeleteOneTypeWindow(text);
 				} else if (obj.body === 0) {
 					deleteOneType();
@@ -454,7 +484,7 @@ const deleteOneType = () => {
 	)
 		.then((res) => {
 			if (res.status === 204) {
-				showTypeAlert(`Gatunek: ${inputGameType.value}, został usunięty`);
+				showTypeAlert(`Gatunek: "${inputGameType.value}", został usunięty`);
 			} else {
 				res.json().then((data) => {
 					showTypeAlert(data.error);
@@ -492,6 +522,14 @@ const getAllGamesForOneType = () => {
 			})
 			.catch((error) => showTypeAlert(error));
 	}
+};
+
+const returnAllGamesForOneType = (number, name, type) => {
+	const newResult = document.createElement("li");
+	newResult.innerHTML = `<p><span>Nr</span>: ${number} --- <span>Tytuł:</span> ${name}  --- <span>Gatunek:</span> ${type}`;
+
+	ulListTypes.appendChild(newResult);
+	listOfTypes.style.display = "block";
 };
 
 const showUpdateTypeWindow = () => {
@@ -532,24 +570,6 @@ const saveUpdateType = () => {
 	}
 }
 
-
-
-
-const returnAllGamesForOneType = (number, name, type) => {
-	const newResult = document.createElement("li");
-	newResult.innerHTML = `<p><span>Nr</span>: ${number} --- <span>Tytuł:</span> ${name}  --- <span>Gatunek:</span> ${type}`;
-
-	ulListTypes.appendChild(newResult);
-	listOfTypes.style.display = "block";
-};
-
-const showDeleteAllTypesWindow = () => {
-	clearListsAndAlerts();
-	clearInputs();
-	shadowImageForAlert.style.display = "block";
-	deleteAllTypesAlert.classList.add("showDeleteAllTypesAlert");
-};
-
 const deleteAllTypes = () => {
 	fetch("https://thegamechanger.azurewebsites.net/type/deleteAll", {
 		method: "DELETE",
@@ -562,6 +582,18 @@ const deleteAllTypes = () => {
 		.catch((error) => showTypeAlert(error));
 	cancelDeleteAllTypesWindow();
 };
+
+
+
+
+const showDeleteAllTypesWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+	deleteAllTypesAlert.classList.add("showDeleteAllTypesAlert");
+};
+
+
 
 const cancelDeleteOneTypeWindow = () => {
 	deleteOneTypeAlert.classList.remove("showDeleteOneTypeWindow");
