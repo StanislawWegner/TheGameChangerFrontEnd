@@ -27,13 +27,21 @@ const ulListTypes = document.querySelector(".ulListTypes");
 const gameAlert = document.querySelector(".gameAlert");
 const typeAlert = document.querySelector(".typeAlert");
 
-const deleteAllAlert = document.querySelector(".deleteAllAlert");
+const deleteAllGamesAlert = document.querySelector(".deleteAllGamesAlert");
+const deleteAllTypesAlert = document.querySelector(".deleteAllTypesAlert");
 const shadowImageForAlert = document.querySelector(".shadowImageForAlert");
-const confirmAlertDeleteAllBtn = document.querySelector(
-	".confirmAlertDeleteAll"
+const confirmAlertDeleteAllGamesBtn = document.querySelector(
+	".confirmAlertDeleteAllGames"
 );
-const cancelAlertDeleteAllBtn = document.querySelector(".cancelAlertDeleteAll");
-const deleteAllAlertText = document.querySelector(".deleteAllAlertText");
+const cancelAlertDeleteAllGamesBtn = document.querySelector(
+	".cancelAlertDeleteAllGames"
+);
+const confirmAlertDeleteAllTypesBtn = document.querySelector(
+	".confirmAlertDeleteAllTypes"
+);
+const cancelAlertDeleteAllTypesBtn = document.querySelector(
+	".cancelAlertDeleteAllTypes"
+);
 
 const deleteOneTypeAlert = document.querySelector(".deleteOneTypeAlert");
 const confirmAlertDeleteOneTypeBtn = document.querySelector(
@@ -218,8 +226,6 @@ const saveUpdateGameOrType = () => {
 		inputNewName.value !== "" &&
 		updateGameAndTypeAlertWindow.classList.contains("showUpdateTypeWindow")
 	) {
-		console.log("gra");
-
 		fetch("https://thegamechanger.azurewebsites.net/type/update", {
 			method: "PUT",
 			headers: {
@@ -246,28 +252,25 @@ const saveUpdateGameOrType = () => {
 	}
 };
 
-const deleteAllGamesOrTypes = () => {
-	if (deleteAllAlert.classList.contains("showDeleteAllGamesAlert")) {
-		fetch("https://thegamechanger.azurewebsites.net/game/deleteAll", {
-			method: "DELETE",
-		})
-			.then((res) => {
-				if (res.status === 204) {
-					showGameAlert("Wszystkie gry zostały usunięte");
-				}
-			})
-			.catch((error) => showGameAlert(error));
-	} else if (deleteAllAlert.classList.contains("showDeleteAllTypesAlert")) {
-		fetch("https://thegamechanger.azurewebsites.net/type/deleteAll", {
-			method: "DELETE",
-		}).then((res) => {
-			if (res.status === 204) {
-				showTypeAlert("Wszystkie gatunki zostały usunięte");
-			}
-		}).catch((error) => showTypeAlert(error));
-	}
+const showDeleteAllGamesWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+	deleteAllGamesAlert.classList.add("showDeleteAllGamesAlert");
+};
 
-	cancelDeleteAllWindow();
+const deleteAllGames = () => {
+	fetch("https://thegamechanger.azurewebsites.net/game/deleteAll", {
+		method: "DELETE",
+	})
+		.then((res) => {
+			if (res.status === 204) {
+				showGameAlert("Wszystkie gry zostały usunięte");
+			}
+		})
+		.catch((error) => showGameAlert(error));
+
+	cancelDeleteAllGamesWindow();
 };
 
 const showUpdateGameNameWindow = () => {
@@ -310,22 +313,8 @@ const clearInputs = () => {
 	inputNewName.value = "";
 };
 
-const showDeleteAllWindow = () => {
-	clearListsAndAlerts();
-	clearInputs();
-	shadowImageForAlert.style.display = "block";
-};
-
-const deleteAllGamesWindow = () => {
-	showDeleteAllWindow();
-	deleteAllAlert.classList.remove("showDeleteAllTypesAlert");
-	deleteAllAlertText.textContent = "Na pewno chcesz usunąć wszystkie gry?";
-	deleteAllAlert.classList.add("showDeleteAllGamesAlert");
-};
-
-const cancelDeleteAllWindow = () => {
-	deleteAllAlert.classList.remove("showDeleteAllGamesAlert");
-	deleteAllAlert.classList.remove("showDeleteAllTypesAlert");
+const cancelDeleteAllGamesWindow = () => {
+	deleteAllGamesAlert.classList.remove("showDeleteAllGamesAlert");
 	shadowImageForAlert.style.display = "none";
 };
 
@@ -342,9 +331,12 @@ getAllGamesBtn.addEventListener("click", getAllGames);
 addGameBtn.addEventListener("click", addNewGame);
 deleteGameBtn.addEventListener("click", deleteGame);
 findGameBtn.addEventListener("click", findGameByName);
-deleteAllGamesBtn.addEventListener("click", deleteAllGamesWindow);
-cancelAlertDeleteAllBtn.addEventListener("click", cancelDeleteAllWindow);
-confirmAlertDeleteAllBtn.addEventListener("click", deleteAllGamesOrTypes);
+deleteAllGamesBtn.addEventListener("click", showDeleteAllGamesWindow);
+cancelAlertDeleteAllGamesBtn.addEventListener(
+	"click",
+	cancelDeleteAllGamesWindow
+);
+confirmAlertDeleteAllGamesBtn.addEventListener("click", deleteAllGames);
 updateGameBtn.addEventListener("click", showUpdateGameNameWindow);
 updateTypeBtn.addEventListener("click", showUpdateTypeNameWindow);
 cancelUpdateBtn.addEventListener("click", cancelUpdateWindow);
@@ -518,7 +510,9 @@ const getAllGamesForOneType = () => {
 			.then((obj) => {
 				if (obj.status === 200) {
 					for (let i = 0; i < obj.body.length; i++) {
-						showTypeAlert(`Do gatunku "${inputGameType.value}" są przypisane (${obj.body.length}) gry`)
+						showTypeAlert(
+							`Do gatunku "${inputGameType.value}" są przypisane (${obj.body.length}) gry`
+						);
 						returnAllGamesForOneType(i + 1, obj.body[i].name, obj.body[i].type);
 					}
 				} else {
@@ -538,18 +532,30 @@ const returnAllGamesForOneType = (number, name, type) => {
 	listOfTypes.style.display = "block";
 };
 
+const showDeleteAllTypesWindow = () => {
+	clearListsAndAlerts();
+	clearInputs();
+	shadowImageForAlert.style.display = "block";
+	deleteAllTypesAlert.classList.add("showDeleteAllTypesAlert");
+};
+
+const deleteAllTypes = () => {
+	fetch("https://thegamechanger.azurewebsites.net/type/deleteAll", {
+		method: "DELETE",
+	})
+		.then((res) => {
+			if (res.status === 204) {
+				showTypeAlert("Wszystkie gatunki zostały usunięte");
+			}
+		})
+		.catch((error) => showTypeAlert(error));
+	cancelDeleteAllTypesWindow();
+};
+
 const cancelDeleteOneTypeWindow = () => {
 	deleteOneTypeAlert.classList.remove("showDeleteOneTypeWindow");
 	shadowImageForAlert.style.display = "none";
 	clearInputs();
-};
-
-const deleteAllTypesWindow = () => {
-	showDeleteAllWindow();
-	deleteAllAlert.classList.remove("showDeleteAllGamesAlert");
-	deleteAllAlertText.textContent =
-		"Na pewno chcesz usunąć wszystkie gatunki gier?";
-	deleteAllAlert.classList.add("showDeleteAllTypesAlert");
 };
 
 const showDeleteOneTypeWindow = (text) => {
@@ -563,11 +569,21 @@ const showTypeAlert = (text) => {
 	typeAlert.style.display = "block";
 };
 
+const cancelDeleteAllTypesWindow = () => {
+	deleteAllTypesAlert.classList.remove("showDeleteAllTypesAlert");
+	shadowImageForAlert.style.display = "none";
+};
+
 getAllTypesBtn.addEventListener("click", getAllTypes);
 addTypeBtn.addEventListener("click", addNewType);
 findTypeBtn.addEventListener("click", findTypeByName);
 deleteTypeBtn.addEventListener("click", deleteAllGamesRelatedToOneType);
-deleteAllTypesBtn.addEventListener("click", deleteAllTypesWindow);
+deleteAllTypesBtn.addEventListener("click", showDeleteAllTypesWindow);
+confirmAlertDeleteAllTypesBtn.addEventListener("click", deleteAllTypes);
+cancelAlertDeleteAllTypesBtn.addEventListener(
+	"click",
+	cancelDeleteAllTypesWindow
+);
 cancelAlertDeleteOneTypeBtn.addEventListener(
 	"click",
 	cancelDeleteOneTypeWindow

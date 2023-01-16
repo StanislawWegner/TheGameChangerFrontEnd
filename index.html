@@ -46,7 +46,7 @@
                     <button class="update-game btn updateGameBtn">aktualizuj</button>
                 </div>
                 <div class="gameAndTypeAlert gameAlert"></div>
-                <button class="deleteAllGames deleteAll">usuń wszystko</button>
+                <button class="deleteAll deleteAllGames ">usuń wszystko</button>
             </div>
 
 
@@ -88,15 +88,25 @@
     </div>
 
     <section>
-        <div class="externalAlertWindow deleteAllAlert">
-            <p class="deleteWindowText deleteAllAlertText"></p>
+        <div class="externalAlertWindow deleteAllGamesAlert">
+            <p class="deleteWindowText deleteAllAlertText">Na pewno chcesz usunąć wszystkie gry?</p>
 
-            <button class="confirmAlertDelete confirmAlertDeleteAll btn ">Usuń</button>
-            <button class="cancelAlertDelete cancelAlertDeleteAll btn">Anuluj</button>
-
-
+            <button class="confirmAlertDelete confirmAlertDeleteAllGames btn ">Usuń</button>
+            <button class="cancelAlertDelete cancelAlertDeleteAllGames btn">Anuluj</button>
         </div>
     </section>
+
+
+    <section>
+        <div class="externalAlertWindow deleteAllTypesAlert">
+            <p class="deleteWindowText deleteAllAlertText">Na pewno chcesz usunąć wszytkie gatunki gier?</p>
+
+            <button class="confirmAlertDelete confirmAlertDeleteAllTypes btn ">Usuń</button>
+            <button class="cancelAlertDelete cancelAlertDeleteAllTypes btn">Anuluj</button>
+        </div>
+    </section>
+
+
     <section class="deleteOneTypeWindow">
         <div class="externalAlertWindow deleteOneTypeAlert">
             <p class="deleteWindowText deleteOneTypeAlertText">
@@ -107,11 +117,15 @@
         </div>
     </section>
 
+
     <section class="updateGameAndTypeWindow">
         <div class="externalAlertWindow updateGameAndTypeAlertWindow">
-            <div><p class="updateGameAndTypeWindowText"></p></div>
+            <div>
+                <p class="updateGameAndTypeWindowText"></p>
+            </div>
             <input type="text" maxlength="25" placeholder=" Wpisz aktualną nazwę..." class="input-style inputOldName">
-            <input type="text" maxlength="25" placeholder=" Wpisz nową nazwę...max 25 znaków..."class="input-style inputNewName">
+            <input type="text" maxlength="25" placeholder=" Wpisz nową nazwę...max 25 znaków..."
+                class="input-style inputNewName">
             <div class="gameAndTypeAlert updateAlert"></div>
             <button class="confirmAlertDelete btn saveUpdateBtn">Zapisz</button>
             <button class="cancelAlertDelete btn cancelUpdateBtn">Anuluj</button>
